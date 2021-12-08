@@ -9,11 +9,7 @@ export function Home() {
              <span>Selecione uma opção:</span>
              <Link to="/simulador-er">Simulador de Expressões Regulares</Link>
              <Link to="/simulador-gr">Simulador de Gramática Regular</Link>
-             <Link to="/simulador-af">Simulador de Automatos</Link>
-
-
-
-           
+             <Link to="/simulador-af">Simulador de Autômatos</Link>
         </div>
     )
     
