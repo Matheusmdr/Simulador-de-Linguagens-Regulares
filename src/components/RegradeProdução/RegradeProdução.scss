@@ -1,0 +1,17 @@
+.production-rule{
+    display: flex;
+    align-items: center;
+    margin: 1rem 5rem;
+
+
+    input{
+        height:2rem;
+        text-align: center;
+        border-radius: 5px;
+        border:none;
+    }
+
+    .arrow{
+        padding: 0 1rem !important;
+    }
+}

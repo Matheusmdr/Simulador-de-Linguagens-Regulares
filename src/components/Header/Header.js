@@ -1,6 +1,6 @@
 import { useState } from "react";
-import {Link} from "react-router-dom"
-import "../styles/Header.scss"
+import { Link } from "react-router-dom"
+import "../Header/Header.scss"
 
 export function Header() {
     const [sidebar, setSidebar] = useState(false);
@@ -9,9 +9,11 @@ export function Header() {
     return (
         <header>
             <div className={sidebar ? 'hamburguer-menu opened' : 'hamburguer-menu'} onClick={handleSidebar}>
-                <div className="line line1"></div>
-                <div className="line line2"></div>
-                <div className="line line3"></div>
+                <div className="lines-container">
+                    <span className="line line1"></span>
+                    <span className="line line2"></span>
+                    <span className="line line3"></span>
+                </div>
             </div>
             <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
                 <ul>

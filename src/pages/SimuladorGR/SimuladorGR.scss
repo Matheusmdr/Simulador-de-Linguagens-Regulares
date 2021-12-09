@@ -1,0 +1,17 @@
+.page-content{
+    text-align: left;
+    width: 100%;
+
+    p{
+        padding: 1rem 5rem;
+        color: #F0EBEA;
+        font-weight: 700;
+    }
+
+    ul{
+        list-style:circle #FFF ;
+        li p{
+        padding:0 5rem;
+        }
+    }
+}

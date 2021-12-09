@@ -1,9 +1,8 @@
 import { BrowserRouter, Route, Routes} from 'react-router-dom'
-import { Home } from "./pages/Home";
-import {SimuladorER} from "./pages/SimuladorER"
-import {SimuladorGR} from "./pages/SimuladorGR"
-import {SimuladorAF} from "./pages/SimuladorAF"
-import './App.scss';
+import { Home } from "./pages/Home/Home";
+import {SimuladorER} from "./pages/SimuladorER/SimuladorER"
+import {SimuladorGR} from "./pages/SimuladorGR/SimuladorGR"
+import {SimuladorAF} from "./pages/SimuladorAF/SimuladorAF"
 
 function App() {
   return (
