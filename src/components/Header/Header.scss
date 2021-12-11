@@ -8,13 +8,13 @@ header {
 
     .hamburguer-menu {
         cursor: pointer;
-        width: 40px !important;
+        width: 2.5rem !important;
         display: flex;
         flex-direction: column;
 
         .lines-container{
             cursor: pointer;
-            height: 40px;
+            height: 2.5rem;
             .line {
                 z-index: 2;
                 display: block;
@@ -30,15 +30,15 @@ header {
             }
     
             .line1 {
-                top: 20px;
+                top: 1.25rem;
             }
     
             .line2 {
-               top: 30px;
+               top: 1.875rem;
             }
     
             .line3 {
-                top: 40px;
+                top: 2.5rem;
             }
     
     
