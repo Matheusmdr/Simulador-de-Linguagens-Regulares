@@ -1,17 +1,61 @@
-.page-content{
+.page-content {
     text-align: left;
     width: 100%;
 
-    p{
+    p {
         padding: 1rem 5rem;
         color: #F0EBEA;
         font-weight: 700;
     }
 
-    ul{
-        list-style:circle #FFF ;
-        li p{
-        padding:0 5rem;
+    ul {
+        list-style: circle #FFF;
+
+        li p {
+            padding: 0 5rem;
         }
     }
+
+    .production-container {
+        display: flex;
+        align-items: center;
+        .production-rule {
+            display: flex;
+            align-items: center;
+            margin: 1rem 5rem;
+
+
+            input {
+                height: 2rem;
+                text-align: center;
+                border-radius: 5px;
+                border: none;
+            }
+
+            .arrow {
+                padding: 0 1rem !important;
+            }
+
+           
+        }
+        .addButton {
+            cursor: pointer;
+            border-radius: 50%;
+            color:#F0EBEA;
+            background:#24282F;
+            height: 30px;
+            width: 30px;
+            border: none;
+            font-size: 1rem;
+            transition: 0.2s ease-in-out;
+            &:hover{
+                opacity: 0.6;
+            }
+        }
+
+        .disableButton{
+            display: none;
+        }
+    }
+
 }

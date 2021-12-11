@@ -1,7 +1,33 @@
+import { useState } from "react";
 import { Header } from "../../components/Header/Header";
-import { ProductionRule } from "../../components/RegradeProdução/RegradeProdução";
+import "./SimuladorGR.scss"
 
 export function SimuladorGR() {
+    const [count,setCount] = useState(2)
+    const [rules, setRules] = useState([{ id: 1, nonterminal: "S", terminal: ""},])
+
+    const handleAddRules = () => {
+        setRules([...rules, { id: count, nonterminal: "", terminal: "" }])
+        setCount(count+1)
+    }
+
+    const handleRemoveFields = id => {
+        const values  = [...rules];
+        values.splice(values.findIndex(value => value.id === id), 1);
+        setRules(values);
+    }
+
+    const handleChangeInput = (id, event) => {
+        const newInputFields = rules.map(i => {
+          if(id === i.id) {
+            i[event.target.name] = event.target.value
+          }
+          return i;
+        })
+        
+        setRules(newInputFields);
+      }
+    
     return (
         <div>
             <Header />
@@ -22,7 +48,18 @@ export function SimuladorGR() {
                     </ul>
 
                     <div className="grammar-container">
-                        <ProductionRule />
+                        {rules.map(rule => (
+                            <div className="production-container" key={rule.id}>
+                                <div className="production-rule">
+                                    <input name="nonterminal" type="text" readOnly={rule.id===1} value={rule.nonterminal}  onChange={event => handleChangeInput(rule.id, event)} />
+                                    <p className="arrow">➜</p>
+                                    <input name="terminal" type="text"  value={rule.terminal} onChange={event => handleChangeInput(rule.id, event)} placeholder="ε"/>
+                                </div>
+                                <button className={`addButton ${rule.id===1 ? 'disableButton' : ''}`} disabled={rule.id===1} onClick={() => handleRemoveFields(rule.id)}>-</button>
+                                <button className="addButton" onClick={handleAddRules}>+</button>
+                            </div>
+                        ))}
+
                     </div>
                 </div>
             </div>
