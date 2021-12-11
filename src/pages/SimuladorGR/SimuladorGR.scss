@@ -16,46 +16,106 @@
         }
     }
 
-    .production-container {
+    .grammar-container {
         display: flex;
-        align-items: center;
-        .production-rule {
+        flex-direction: column;
+        align-content: center;
+        .production-container {
             display: flex;
             align-items: center;
-            margin: 1rem 5rem;
+            .production-rule {
+                display: flex;
+                align-items: center;
+                margin: 1rem 5rem;
 
 
-            input {
-                height: 2rem;
-                text-align: center;
-                border-radius: 5px;
+                input {
+                    height: 2rem;
+                    text-align: center;
+                    border-radius: 5px;
+                    border: none;
+                }
+
+                .arrow {
+                    padding: 0 1rem !important;
+                }
+
+
+            }
+
+            .removeButton {
+                cursor: pointer;
+                border-radius: 50%;
+                color: #F0EBEA;
+                background: #24282F;
+                height: 1.875rem;
+                width: 1.875rem;
                 border: none;
+                font-size: 1rem;
+                transition: 0.2s ease-in-out;
+
+                &:hover {
+                    opacity: 0.6;
+                }
             }
 
-            .arrow {
-                padding: 0 1rem !important;
+            .disableButton {
+                display: none;
             }
-
-           
         }
-        .addButton {
-            cursor: pointer;
-            border-radius: 50%;
-            color:#F0EBEA;
-            background:#24282F;
-            height: 30px;
-            width: 30px;
+
+        .addButton{
+            width: 29%;
+            text-align: center;
+            justify-self: center;
+            height: 2rem;
+            margin: 1rem 5rem;
             border: none;
-            font-size: 1rem;
+            font-weight: 700;
+            color: #F0EBEA;
+            background: #24282F;
+            cursor: pointer;
             transition: 0.2s ease-in-out;
             &:hover{
                 opacity: 0.6;
             }
         }
-
-        .disableButton{
-            display: none;
-        }
     }
 
+
+    .test-container{
+        margin: 2rem 5rem;
+
+        h3{
+            color: #61DAFB;
+            font-weight: 700;
+            font-size: 1.6rem;
+        }
+
+
+        .table-container{
+            display: flex;
+
+
+            .textarea-input{
+                display: flex;
+                flex-direction: column;
+                width: 50%;
+                
+                span{
+                    font-size: 1rem;
+                }
+            }
+
+
+            .table{
+                width: 50%;
+                padding-left: 5rem;
+
+                table th{
+                    color: #61DAFB;
+                }
+            }
+        }
+    }
 }

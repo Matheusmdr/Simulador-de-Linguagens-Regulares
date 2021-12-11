@@ -3,36 +3,36 @@ import { Header } from "../../components/Header/Header";
 import "./SimuladorGR.scss"
 
 export function SimuladorGR() {
-    const [count,setCount] = useState(2)
-    const [rules, setRules] = useState([{ id: 1, nonterminal: "S", terminal: ""},])
+    const [count, setCount] = useState(2)
+    const [rules, setRules] = useState([{ id: 1, nonterminal: "S", terminal: "" },])
 
     const handleAddRules = () => {
         setRules([...rules, { id: count, nonterminal: "", terminal: "" }])
-        setCount(count+1)
+        setCount(count + 1)
     }
 
     const handleRemoveFields = id => {
-        const values  = [...rules];
+        const values = [...rules];
         values.splice(values.findIndex(value => value.id === id), 1);
         setRules(values);
     }
 
     const handleChangeInput = (id, event) => {
         const newInputFields = rules.map(i => {
-          if(id === i.id) {
-            i[event.target.name] = event.target.value
-          }
-          return i;
+            if (id === i.id) {
+                i[event.target.name] = event.target.value
+            }
+            return i;
         })
-        
+
         setRules(newInputFields);
-      }
-    
+    }
+
     return (
         <div>
             <Header />
             <div className="container">
-                <h1 className="title">Simulador de Gramática Regular</h1>
+                <h1 className="title">Simulador de GR</h1>
                 <div className="page-content">
                     <p>Insira sua gramática regular aqui. O símbolo de início já foi preenchido para você.</p>
                     <ul>
@@ -51,15 +51,38 @@ export function SimuladorGR() {
                         {rules.map(rule => (
                             <div className="production-container" key={rule.id}>
                                 <div className="production-rule">
-                                    <input name="nonterminal" type="text" readOnly={rule.id===1} value={rule.nonterminal}  onChange={event => handleChangeInput(rule.id, event)} />
+                                    <input name="nonterminal" type="text" readOnly={rule.id === 1} value={rule.nonterminal} onChange={event => handleChangeInput(rule.id, event)} />
                                     <p className="arrow">➜</p>
-                                    <input name="terminal" type="text"  value={rule.terminal} onChange={event => handleChangeInput(rule.id, event)} placeholder="ε"/>
+                                    <input name="terminal" type="text" value={rule.terminal} onChange={event => handleChangeInput(rule.id, event)} placeholder="ε" />
                                 </div>
-                                <button className={`addButton ${rule.id===1 ? 'disableButton' : ''}`} disabled={rule.id===1} onClick={() => handleRemoveFields(rule.id)}>-</button>
-                                <button className="addButton" onClick={handleAddRules}>+</button>
+                                <button className={`removeButton ${rule.id === 1 ? 'disableButton' : ''}`} disabled={rule.id === 1} onClick={() => handleRemoveFields(rule.id)}>-</button>
                             </div>
                         ))}
+                        <button className="addButton" onClick={handleAddRules}>Add More</button>
+                    </div>
 
+
+                    <div className="test-container">
+                        <h3>Testar</h3>
+                        <div className="table-container">
+                            <div className="textarea-input">
+                                <span>
+                                    Para testar a GR acima, insira as strings de teste aqui, uma por linha. Uma linha vazia corresponde à string vazia. Os resultados serão mostrados automaticamente.</span>
+                                    <textarea rows="5" cols="33"></textarea>
+                            </div>
+                            <div className="table">
+                                <table>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>String</th>
+                                        <th>Correspondência</th>
+                                    </tr>
+                                    <tr>
+                                        
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
