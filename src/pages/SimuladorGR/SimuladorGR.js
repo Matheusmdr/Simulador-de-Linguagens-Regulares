@@ -3,12 +3,12 @@ import { Header } from "../../components/Header/Header";
 import "./SimuladorGR.scss"
 
 export function SimuladorGR() {
-    const [count,setCount] = useState(1)
+    const [count,setCount] = useState(2)
     const [rules, setRules] = useState([{ id: 1, nonterminal: "S", terminal: ""},])
 
     const handleAddRules = () => {
-        setCount(count+1)
         setRules([...rules, { id: count, nonterminal: "", terminal: "" }])
+        setCount(count+1)
     }
 
     const handleRemoveFields = id => {
@@ -51,11 +51,11 @@ export function SimuladorGR() {
                         {rules.map(rule => (
                             <div className="production-container" key={rule.id}>
                                 <div className="production-rule">
-                                    <input name="nonterminal" type="text" value={rule.nonterminal}  onChange={event => handleChangeInput(rule.id, event)} />
+                                    <input name="nonterminal" type="text" readOnly={rule.id===1} value={rule.nonterminal}  onChange={event => handleChangeInput(rule.id, event)} />
                                     <p className="arrow">➜</p>
-                                    <input name="terminal" type="text"  value={rule.terminal} onChange={event => handleChangeInput(rule.id, event)}/>
+                                    <input name="terminal" type="text"  value={rule.terminal} onChange={event => handleChangeInput(rule.id, event)} placeholder="ε"/>
                                 </div>
-                                <button className="addButton" disabled={rule.id === 1} onClick={() => handleRemoveFields(rule.id)}>-</button>
+                                <button className={`addButton ${rule.id===1 ? 'disableButton' : ''}`} disabled={rule.id===1} onClick={() => handleRemoveFields(rule.id)}>-</button>
                                 <button className="addButton" onClick={handleAddRules}>+</button>
                             </div>
                         ))}
