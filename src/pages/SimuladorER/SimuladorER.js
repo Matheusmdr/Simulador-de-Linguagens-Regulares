@@ -51,8 +51,8 @@ export function SimuladorER() {
                             <div className="string-container" key={test.id}>
                                 <RemoveCircleOutlineIcon className={`remove-button ${test.id === 1 ? 'disable-button' : ''}`} disabled={test.id === 1} onClick={() => handleRemoveTests(test.id)}/>
                                 <div  className={`box-string ${test.id === 1 ? 'fix-margin' : ''}`}>
-                                    <label htmlFor="input-string">TEST STRING</label>
-                                    <input type="text" name="input-string" value={test.string} onChange={event => handleChangeInput(test.id, event)} placeholder="insira sua string de teste aqui" />
+                                    <label htmlFor="string">TEST STRING</label>
+                                    <input type="text" name="string" value={test.string} onChange={event => handleChangeInput(test.id, event)} placeholder="insira sua string de teste aqui" />
                                 </div>
                             </div>
                         ))}
