@@ -41,6 +41,7 @@ export function SimuladorER() {
         })
 
         setTests(newInputFields);
+        console.log(tests)
     }
 
     const validate = value => {
