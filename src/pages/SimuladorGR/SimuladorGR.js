@@ -5,6 +5,13 @@ import "./SimuladorGR.scss"
 export function SimuladorGR() {
     const [count, setCount] = useState(2)
     const [rules, setRules] = useState([{ id: 1, nonterminal: "S", terminal: "" },])
+    const [strings, setStrings] = useState([])
+
+
+    const handleStrings = event => {
+        const lines = event.target.value.split('\n');
+        setStrings(lines)
+    }
 
     const handleAddRules = () => {
         setRules([...rules, { id: count, nonterminal: "", terminal: "" }])
@@ -27,6 +34,12 @@ export function SimuladorGR() {
 
         setRules(newInputFields);
     }
+
+ 
+    
+  
+    
+
 
     return (
         <div>
@@ -58,7 +71,7 @@ export function SimuladorGR() {
                                 <button className={`removeButton ${rule.id === 1 ? 'disableButton' : ''}`} disabled={rule.id === 1} onClick={() => handleRemoveFields(rule.id)}>-</button>
                             </div>
                         ))}
-                        <button className="addButton" onClick={handleAddRules}>Add More</button>
+                        <button className="addButton" onClick={handleAddRules}>+ Add RULES</button>
                     </div>
 
 
@@ -68,18 +81,34 @@ export function SimuladorGR() {
                             <div className="textarea-input">
                                 <span>
                                     Para testar a GR acima, insira as strings de teste aqui, uma por linha. Uma linha vazia corresponde à string vazia. Os resultados serão mostrados automaticamente.</span>
-                                    <textarea rows="5" cols="33"></textarea>
+                                <textarea rows="15" cols="33" onChange={handleStrings}></textarea>
                             </div>
                             <div className="table">
                                 <table>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>String</th>
-                                        <th>Correspondência</th>
-                                    </tr>
-                                    <tr>
-                                        
-                                    </tr>
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>String</th>
+                                            <th>Correspondência</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {strings.map((string,index) =>(
+                                            <tr  key={index}>
+                                                <td>
+                                                    {index}
+                                                </td>
+                                                <td>
+                                                    {`"${string}"`}
+                                                </td>
+                                                <td>
+                                                 
+                                                </td>
+                                            </tr>
+                                        ))
+                                            
+                                        }
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
