@@ -100,6 +100,18 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+
+                .none{
+                    background: #434854;
+                }
+
+                .accepted{
+                    background: green;
+                }
+
+                .rejected{
+                    background: red;
+                }
                 
 
                 label{

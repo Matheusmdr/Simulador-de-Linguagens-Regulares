@@ -7,10 +7,20 @@ import "./SimuladorER.scss"
 
 export function SimuladorER() {
     const [count, setCount] = useState(2)
-    const [tests, setTests] = useState([{ id: 1, string: "" },])
+    const [tests, setTests] = useState([{ id: 1, string: "", accepted: ""},])
+
+    const handleChangeRegex = () => {
+        const newInputFields = tests.map(i => {
+            i['accepted'] = validate(i.string);
+            
+            return i;
+        })
+
+        setTests(newInputFields);
+    }
 
     const handleAddTests = () => {
-        setTests([...tests, { id: count, string: "" }])
+        setTests([...tests, { id: count, string: "", accepted: validate("") }])
         setCount(count + 1)
     }
 
@@ -23,7 +33,9 @@ export function SimuladorER() {
     const handleChangeInput = (id, event) => {
         const newInputFields = tests.map(i => {
             if (id === i.id) {
-                i[event.target.name] = event.target.value
+                let value = event.target.value;
+                i[event.target.name] = value;
+                i['accepted'] = validate(value);
             }
             return i;
         })
@@ -31,16 +43,21 @@ export function SimuladorER() {
         setTests(newInputFields);
     }
 
+    const validate = value => {
+        let regex_input = (document.getElementsByName("regex-input")[0]).value;
+        let regex = new RegExp(regex_input);
+        return (regex_input === "") ? "" : (regex.test(value) ? "true"  : "false");
+    }
 
     return (
-        <div>
+        <div> 
             <Header />
             <div className="container">
                 <h1 className="title">Simulador de ER</h1>
                 <div className="page-content">
                     <div className="RegEX">
                         <label htmlFor="regex-input"> REGULAR EXPRESSION </label>
-                        <input type="text" name="regex-input" placeholder="insira sua expressão regular aqui" />
+                        <input type="text" name="regex-input" onChange={handleChangeRegex} placeholder="insira sua expressão regular aqui" />
                     </div>
                     <div className="tests-title">
                         <ScienceIcon className="science-icon" />
@@ -52,7 +69,7 @@ export function SimuladorER() {
                                 <RemoveCircleOutlineIcon className={`remove-button ${test.id === 1 ? 'disable-button' : ''}`} disabled={test.id === 1} onClick={() => handleRemoveTests(test.id)}/>
                                 <div  className={`box-string ${test.id === 1 ? 'fix-margin' : ''}`}>
                                     <label htmlFor="string">TEST STRING</label>
-                                    <input type="text" name="string" value={test.string} onChange={event => handleChangeInput(test.id, event)} placeholder="insira sua string de teste aqui" />
+                                    <input type="text" name="string" className={`${test.accepted === '' ? 'none' : (test.accepted === "true" ? 'accepted' : 'rejected')}`} value={test.string} onChange={event => handleChangeInput(test.id, event)} placeholder="insira sua string de teste aqui" />
                                 </div>
                             </div>
                         ))}
