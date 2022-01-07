@@ -10,17 +10,38 @@ export function SimuladorER() {
     const [tests, setTests] = useState([{ id: 1, string: "", accepted: ""},])
 
     const handleChangeRegex = () => {
-        const newInputFields = tests.map(i => {
-            i['accepted'] = validate(i.string);
-            
-            return i;
-        })
+        let newInputFields;
+        let regex_input = document.getElementsByName("regex-input")[0];
+        let regex_label = document.getElementById("regex-label");
+
+        if(validate("") === "error"){
+            regex_input.style.background = "red";
+            regex_label.innerHTML = "REGULAR EXPRESSION <span class='error-msg'>(Syntax error)</span> ";
+
+            newInputFields = tests.map(i => {
+                i['accepted'] = "";
+                
+                return i;
+            })
+        }
+        else{
+            regex_input.style.background = "#434854";
+            regex_label.innerHTML = "REGULAR EXPRESSION";
+
+            newInputFields = tests.map(i => {
+                i['accepted'] = validate(i.string);
+                
+                return i;
+            })
+        }
 
         setTests(newInputFields);
+        console.log(tests)
     }
 
     const handleAddTests = () => {
-        setTests([...tests, { id: count, string: "", accepted: validate("") }])
+        let validation = validate("");;
+        setTests([...tests, { id: count, string: "", accepted: ((validation === "error") ? "" : validation) }])
         setCount(count + 1)
     }
 
@@ -34,20 +55,32 @@ export function SimuladorER() {
         const newInputFields = tests.map(i => {
             if (id === i.id) {
                 let value = event.target.value;
+                let validation = validate(value);
                 i[event.target.name] = value;
-                i['accepted'] = validate(value);
+                if(validation === "error"){
+                    i['accepted'] = "";
+                }
+                else{
+                    i['accepted'] = validation;
+                }
             }
             return i;
         })
-
+        
         setTests(newInputFields);
         console.log(tests)
     }
 
     const validate = value => {
-        let regex_input = (document.getElementsByName("regex-input")[0]).value;
-        let regex = new RegExp(regex_input);
-        return (regex_input === "") ? "" : (regex.test(value) ? "true"  : "false");
+        try{
+            let regex_input = (document.getElementsByName("regex-input")[0]).value;
+            let regex = new RegExp(regex_input);
+            return (regex_input === "") ? "" : (regex.test(value) ? "true"  : "false");
+        }
+        catch(e){
+            return "error";
+        }
+        
     }
 
     return (
@@ -57,7 +90,7 @@ export function SimuladorER() {
                 <h1 className="title">Simulador de ER</h1>
                 <div className="page-content">
                     <div className="RegEX">
-                        <label htmlFor="regex-input"> REGULAR EXPRESSION </label>
+                        <label id="regex-label" htmlFor="regex-input"> REGULAR EXPRESSION</label>
                         <input type="text" name="regex-input" onChange={handleChangeRegex} placeholder="insira sua expressão regular aqui" />
                     </div>
                     <div className="tests-title">
