@@ -1,0 +1,137 @@
+//Add Transition Modal
+.add-transition-content{
+    width: 50%;
+    height: 28rem;
+    border: 1px solid #ccc;
+    position: absolute;
+    margin-top: 8rem;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    background: #fff;
+    overflow: auto;
+    border-radius: 20px;
+    outline: none;
+    padding: 20px;
+    z-index: 10;
+}
+
+.add-transition-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.add-transition-box{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family:'Poppins', sans-serif;
+
+    h2{
+        margin-bottom: 3rem;
+        color: #36A3C2;
+    }
+
+    input{
+        width: 50%;
+        height: 2.5rem;
+        margin-top: 1.5rem;
+        box-shadow: inset 0 .0625em .125em rgba(10,10,10,.05);
+        padding-top: calc(.5rem - 1px);
+        padding-bottom: calc(.5rem - 1px);
+        padding-left: calc(.75rem - 1px);
+        padding-right: calc(.75rem - 1px);
+        border-radius: .375rem;
+        outline: 0;
+        border: 1px solid lightgray;
+        &:focus{
+            border: 1px solid blue;
+            outline: 2px solid lightsteelblue;
+        }
+    }
+
+    .select-box{
+        width: 80%;
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+
+        div{
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            h3{
+                margin-bottom: 1rem;
+            }
+    
+            select{
+                width: 100%;
+                height: 2rem;
+                border: 1px solid lightgrey;
+                border-radius: 5px;
+                font-size: 1.2rem;
+                font-weight: bold;
+                font-family:'Poppins', sans-serif;
+                color: gray;
+            }
+        }
+
+    }
+
+    .add-transition-buttons{
+        width: 70%;
+        height: 3rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: 3rem;
+        //border: 1px solid red;
+
+        .add-transition-button{
+            width: 35%;
+            height: 2.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family:'Poppins', sans-serif;
+            color: #F0EBEA;
+            background: #36A3C2;
+            cursor: pointer;
+            transition: 0.2s ease-in-out;
+            &:hover{
+                opacity: 0.6;
+            }
+        }
+
+        .cancel-transition-button{
+            width: 35%;
+            height: 2.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family:'Poppins', sans-serif;
+            color: #F0EBEA;
+            background: red;
+            cursor: pointer;
+            transition: 0.2s ease-in-out;
+            &:hover{
+                opacity: 0.6;
+            }
+        }
+    }
+
+}
