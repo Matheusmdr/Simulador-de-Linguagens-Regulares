@@ -5,7 +5,6 @@
     p {
         padding: 1rem 5rem;
         color: #F0EBEA;
-        font-weight: 700;
     }
 
     ul {
@@ -14,6 +13,10 @@
         li p {
             padding: 0 5rem;
         }
+    }
+
+    .inactive{
+        display: none !important;
     }
 
     .grammar-container {
@@ -66,6 +69,17 @@
             .disableButton {
                 display: none;
             }
+
+            .error-sintax{
+                color: #fff;
+                padding: 0.5rem;
+                display: block;
+                border-radius:5px ;
+                background-color: #ff0000;
+                margin-right: 1rem;
+              
+            }
+
         }
 
         .addButton{
