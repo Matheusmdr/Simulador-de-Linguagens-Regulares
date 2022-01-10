@@ -175,7 +175,6 @@ export function SimuladorAF() {
         setTransitions(values)
         handleRemoveTransitionModal()
     }
-    //Info State
 
     //Tests
     const changeTestType = (event) => {
@@ -251,6 +250,10 @@ export function SimuladorAF() {
         setClickNodeIsOpen(false)
     }
 
+    const validateAF = () => {
+        console.log("teste")
+    }
+
     return (
         <div>
             <Header />
@@ -267,11 +270,11 @@ export function SimuladorAF() {
                         <h2>Estado selecionado: {clickedNode}</h2>
                         <div className="checkbox-box">
                             <div className="checkbox-container">
-                                <input type="checkbox" name="start" id="start-checkbox" defaultChecked={startCheck} />
+                                <input type="checkbox" name="start" id="start-checkbox" checked={startCheck} onChange={() => setStartCheck(!startCheck)}/>
                                 <label htmlFor="start">Estado inicial</label>
                             </div>
                             <div className="checkbox-container">
-                                <input type="checkbox" name="final" id="final-checkbox"  defaultChecked={finalCheck}/>
+                                <input type="checkbox" name="final" id="final-checkbox"  checked={finalCheck} onChange={() => setFinalCheck(!finalCheck)}/>
                                 <label htmlFor="final">Estado final</label>
                             </div>
                         </div>
@@ -415,7 +418,7 @@ export function SimuladorAF() {
                             <label id="automaton-label" htmlFor="automaton-input"> TESTAR STRING</label>
                             <input type="text" name="automaton-input" placeholder="insira sua string de teste aqui" />
                             <div className="single-buttons">
-                                <button className="test-button">Testar</button>
+                                <button className="test-button" onClick={validateAF}>Testar</button>
                                 {/*<button className="step-button">Step-by-step</button>*/}
                             </div>
                         </div>
