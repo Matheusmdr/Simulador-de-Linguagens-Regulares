@@ -204,7 +204,7 @@ export function SimuladorGR() {
             <div className="container">
                 <h1 className="title">Simulador de GR</h1>
                 <div className="page-content">
-                    <p>Insira sua gramática regular aqui. O símbolo de início já foi preenchido para você.</p>
+                    <p>Insira sua gramática regular aqui(GLUD ou GLUE). O símbolo de início já foi preenchido para você.</p>
                     <ul>
                         <li>
                             <p>O não-terminal esquerdo de cada campo deve ser preenchido.</p>
@@ -227,7 +227,7 @@ export function SimuladorGR() {
                                 <button className={`removeButton ${rule.id === 1 ? 'disableButton' : ''}`} disabled={rule.id === 1} onClick={() => handleRemoveFields(rule.id)}>-</button>
                             </div>
                         ))}
-                        <button className="addButton" onClick={handleAddRules}>+ Add RULES</button>
+                        <button className="addButton" onClick={handleAddRules}>+ Adicionar Regras</button>
                     </div>
 
                     <div className="test-container">

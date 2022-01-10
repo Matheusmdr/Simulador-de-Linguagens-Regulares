@@ -90,25 +90,25 @@ export function SimuladorER() {
                 <h1 className="title">Simulador de ER</h1>
                 <div className="page-content">
                     <div className="RegEX">
-                        <label id="regex-label" htmlFor="regex-input"> REGULAR EXPRESSION</label>
+                        <label id="regex-label" htmlFor="regex-input"> EXPRESSÃO REGULAR</label>
                         <input type="text" name="regex-input" onChange={handleChangeRegex} placeholder="insira sua expressão regular aqui" />
                     </div>
                     <div className="tests-title">
                         <ScienceIcon className="science-icon" />
-                        <h2>Tests</h2>
+                        <h2>Testes</h2>
                     </div>
                     <div className="tests-container">
                         {tests.map(test => (
                             <div className="string-container" key={test.id}>
                                 <RemoveCircleOutlineIcon className={`remove-button ${test.id === 1 ? 'disable-button' : ''}`} disabled={test.id === 1} onClick={() => handleRemoveTests(test.id)}/>
                                 <div  className={`box-string ${test.id === 1 ? 'fix-margin' : ''}`}>
-                                    <label htmlFor="string">TEST STRING</label>
+                                    <label htmlFor="string">STRING DE TESTE</label>
                                     <input type="text" name="string" className={`${test.accepted === '' ? 'none' : (test.accepted === "true" ? 'accepted' : 'rejected')}`} value={test.string} onChange={event => handleChangeInput(test.id, event)} placeholder="insira sua string de teste aqui" />
                                 </div>
                             </div>
                         ))}
                         <div className="box-button">
-                            <button className="add-button" onClick={handleAddTests} >+ Add TEST</button>
+                            <button className="add-button" onClick={handleAddTests} >+ Adicionar Teste</button>
                         </div>
                     </div>
                 </div>
