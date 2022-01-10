@@ -109,7 +109,6 @@ export function SimuladorGR() {
 
             const grammar = handleGrammar()
 
-            console.log(grammar)
 
             grammar.forEach(input => {
                 input.terminal.forEach(rule => {

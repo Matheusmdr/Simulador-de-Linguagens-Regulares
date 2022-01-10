@@ -1,7 +1,7 @@
 //Add Transition Modal
-.add-transition-content{
+.click-node-content{
     width: 50%;
-    height: 28rem;
+    height: 20rem;
     border: 1px solid #ccc;
     position: absolute;
     margin-top: 8rem;
@@ -17,7 +17,7 @@
     z-index: 10;
 }
 
-.add-transition-overlay{
+.click-node-overlay{
     position: fixed;
     top: 0;
     left: 0;
@@ -27,7 +27,7 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.add-transition-box{
+.click-node-box{
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -57,7 +57,7 @@
         }
     }
 
-    .select-box{
+    .checkbox-box{
         width: 80%;
         margin-top: 2rem;
         display: flex;
@@ -65,31 +65,28 @@
         justify-content: space-around;
         align-items: center;
 
-        div{
-            width: 40%;
+        .checkbox-container{
+            width: 100%;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            align-content: center;
 
-            h3{
-                margin-bottom: 1rem;
+            input{
+                width: 40px;
+                height: 40px;
+                padding:0;
             }
-    
-            select{
-                width: 100%;
-                height: 2rem;
-                border: 1px solid lightgrey;
-                border-radius: 5px;
-                font-size: 1.2rem;
-                font-weight: bold;
-                font-family:'Poppins', sans-serif;
-                color: gray;
+            label{
+                font-weight: 700;
+                padding-top: 1rem;
+                padding-left: 0.3rem;
             }
         }
 
     }
 
-    .add-transition-buttons{
+    .click-node-buttons{
         width: 70%;
         height: 3rem;
         display: flex;
@@ -99,7 +96,7 @@
         margin-top: 3rem;
         //border: 1px solid red;
 
-        .add-transition-button{
+        .click-node-button{
             width: 35%;
             height: 2.5rem;
             border: none;
@@ -116,7 +113,7 @@
             }
         }
 
-        .cancel-transition-button{
+        .cancel-node-button{
             width: 35%;
             height: 2.5rem;
             border: none;
