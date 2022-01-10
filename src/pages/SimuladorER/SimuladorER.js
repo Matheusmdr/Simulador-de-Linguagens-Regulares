@@ -16,7 +16,7 @@ export function SimuladorER() {
 
         if(validate("") === "error"){
             regex_input.style.background = "red";
-            regex_label.innerHTML = "REGULAR EXPRESSION <span class='error-msg'>(Syntax error)</span> ";
+            regex_label.innerHTML = "EXPRESSÃO REGULAR <span class='error-msg'>(Erro de síntaxe)</span> ";
 
             newInputFields = tests.map(i => {
                 i['accepted'] = "";
@@ -26,7 +26,7 @@ export function SimuladorER() {
         }
         else{
             regex_input.style.background = "#434854";
-            regex_label.innerHTML = "REGULAR EXPRESSION";
+            regex_label.innerHTML = "EXPRESSÃO REGULAR";
 
             newInputFields = tests.map(i => {
                 i['accepted'] = validate(i.string);

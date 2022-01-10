@@ -227,7 +227,7 @@ export function SimuladorGR() {
                                 <button className={`removeButton ${rule.id === 1 ? 'disableButton' : ''}`} disabled={rule.id === 1} onClick={() => handleRemoveFields(rule.id)}>-</button>
                             </div>
                         ))}
-                        <button className="addButton" onClick={handleAddRules}>+ Adicionar Regras</button>
+                        <button className="addButton" onClick={handleAddRules}>+ Adicionar Regra</button>
                     </div>
 
                     <div className="test-container">
