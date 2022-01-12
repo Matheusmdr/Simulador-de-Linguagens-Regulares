@@ -40,7 +40,7 @@ export function SimuladorAF() {
             let string = `digraph{`
             let color = "#61DAFB"
             for (let i = 0; i < statesArray.length; i++) {
-                string += statesArray[i].name + `[shape=${statesArray[i].final? 'doublecircle' : 'circle'} style=filled  fillcolor="${statesArray[i].start? color : ''}"];`
+                string += statesArray[i].name + `[shape=${statesArray[i].final ? 'doublecircle' : 'circle'} style=filled  fillcolor="${statesArray[i].start ? color : ''}"];`
             }
             for (let j = 0; j < transitionsArray.length; j++) {
                 string += transitionsArray[j].origin_state + "->" + transitionsArray[j].dest_state + `[label=${transitionsArray[j].input_char}]`
@@ -65,8 +65,8 @@ export function SimuladorAF() {
         if (node.length > 0 && typeof node !== "undefined") {
             aux = true
             setClickedNode(node)
-            for(let i = 0; i < states.length; i++){
-                if(states[i].name === node){
+            for (let i = 0; i < states.length; i++) {
+                if (states[i].name === node) {
                     setStartCheck(states[i].start)
                     setFinalCheck(states[i].final)
                 }
@@ -105,6 +105,7 @@ export function SimuladorAF() {
             handleAddStateModal()
         }
     }
+
     //Add Transition
     const [modalAddTransitionIsOpen, setModalAddTransitionOpen] = useState(false)
 
@@ -117,6 +118,9 @@ export function SimuladorAF() {
         let start = (document.querySelector("#add-start-transition-input")).value;
 
         let final = (document.querySelector("#add-final-transition-input")).value;
+        if (typeof value !== 'string' || value.length < 1) {
+            value = "λ"
+        }
         if (value !== "") {
             let transitionsArray = ([...transitions, { id: countTransition, origin_state: start, input_char: value, dest_state: final }])
             let aux = []
@@ -219,29 +223,29 @@ export function SimuladorAF() {
         setRemoveStateIsOpen(prev => !prev)
     }
 
-    const handleClickedNodeChanges = () =>{
+    const handleClickedNodeChanges = () => {
         let startCheckbox = document.querySelector("#start-checkbox").checked
         let finalCheckbox = document.querySelector("#final-checkbox").checked
         let values = []
 
-        if(startCheckbox){
-            for(let i = 0; i < states.length; i++){
-                if(states[i].name === clickedNode){
+        if (startCheckbox) {
+            for (let i = 0; i < states.length; i++) {
+                if (states[i].name === clickedNode) {
                     values.push({ id: states[i].id, name: states[i].name, start: startCheckbox, final: finalCheckbox })
                 }
-                else{
+                else {
                     values.push({ id: states[i].id, name: states[i].name, start: false, final: states[i].final })
                 }
             }
 
         }
-        
-        else{
-            for(let i = 0; i < states.length; i++){
-                if(states[i].name === clickedNode){
+
+        else {
+            for (let i = 0; i < states.length; i++) {
+                if (states[i].name === clickedNode) {
                     values.push({ id: states[i].id, name: states[i].name, start: states[i].start, final: finalCheckbox })
                 }
-                else{
+                else {
                     values.push({ id: states[i].id, name: states[i].name, start: states[i].start, final: states[i].final })
                 }
             }
@@ -251,14 +255,50 @@ export function SimuladorAF() {
     }
 
     const validateAF = () => {
-        console.log("teste")
+        let string = (document.getElementsByName("automaton-input")[0].value);
+        if (string.length > 0 && typeof string === 'string') {
+            const stateInitial = states.filter(state => state.start)
+            const stateFinalArray = states.filter(state => state.final)
+            if (stateInitial.length > 0 && stateFinalArray.length > 0) {
+                let input = document.getElementsByName("automaton-input")[0];
+                if(verifyAF(string, 0, stateInitial[0].name)){
+                    input.style.backgroundColor = "#00ff00"
+                }
+                else{
+                    input.style.backgroundColor = "#ff0000"
+                }
+            }
+            else {
+                alert("insira um estado inicial")
+                return false
+            }
+        }
     }
+
+    const verifyAF = (string, pos, currState) => {
+        const transitionsArray = transitions.filter(transition => (transition.origin_state === currState && (transition.input_char === string[pos] || transition.input_char === "λ")))
+       
+        for (let i = 0; i < transitionsArray.length; i++) {
+            let nextState = (states.filter(state => transitionsArray[i].dest_state === state.name))[0]
+            if ((pos >= string.length - 1) && (nextState.final === true)) return true
+            if(pos >= string.length && !nextState.final) return false
+            if (transitionsArray[i].input_char === "λ") {
+                if (verifyAF(string, pos, transitionsArray[i].dest_state)) return true
+            }
+            else {
+                if (verifyAF(string, pos + 1, transitionsArray[i].dest_state)) return true
+            }
+        }
+
+        return false
+    }
+
+
 
     return (
         <div>
             <Header />
             <div className="container">
-
                 <Modal
                     closeTimeoutMS={100}
                     isOpen={modalClickNodeIsOpen}
@@ -270,11 +310,11 @@ export function SimuladorAF() {
                         <h2>Estado selecionado: {clickedNode}</h2>
                         <div className="checkbox-box">
                             <div className="checkbox-container">
-                                <input type="checkbox" name="start" id="start-checkbox" checked={startCheck} onChange={() => setStartCheck(!startCheck)}/>
+                                <input type="checkbox" name="start" id="start-checkbox" checked={startCheck} onChange={() => setStartCheck(!startCheck)} />
                                 <label htmlFor="start">Estado inicial</label>
                             </div>
                             <div className="checkbox-container">
-                                <input type="checkbox" name="final" id="final-checkbox"  checked={finalCheck} onChange={() => setFinalCheck(!finalCheck)}/>
+                                <input type="checkbox" name="final" id="final-checkbox" checked={finalCheck} onChange={() => setFinalCheck(!finalCheck)} />
                                 <label htmlFor="final">Estado final</label>
                             </div>
                         </div>
@@ -419,7 +459,7 @@ export function SimuladorAF() {
                             <input type="text" name="automaton-input" placeholder="insira sua string de teste aqui" />
                             <div className="single-buttons">
                                 <button className="test-button" onClick={validateAF}>Testar</button>
-                                {/*<button className="step-button">Step-by-step</button>*/}
+                                <button className="step-button">Step-by-step</button>
                             </div>
                         </div>
                         <div className="multi-box">
@@ -427,7 +467,6 @@ export function SimuladorAF() {
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     )
