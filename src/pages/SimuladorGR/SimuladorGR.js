@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Header } from "../../components/Header/Header";
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import "./SimuladorGR.scss"
 
 export function SimuladorGR() {
@@ -128,7 +129,6 @@ export function SimuladorGR() {
                     }
                 })
             })
-
             if (validator.filter(validateField => validateField === 'D').length === validator.length) {
                 for (let rule of grammar[0].terminal) {
                     if (validate(grammar, rule, string, 'D')) {
@@ -224,7 +224,7 @@ export function SimuladorGR() {
                                 </div>
                                 <div className={`error-sintax ${rule.terminal === rule.nonterminal ? 'block' : 'inactive'}`} >Erro de Sintaxe</div>
                                 {handleValidator(rule.terminal, rule.nonterminal)}
-                                <button className={`removeButton ${rule.id === 1 ? 'disableButton' : ''}`} disabled={rule.id === 1} onClick={() => handleRemoveFields(rule.id)}>-</button>
+                                <RemoveCircleOutlineIcon  className={`removeButton ${rule.id === 1 ? 'disableButton' : ''}`} disabled={rule.id === 1} onClick={() => handleRemoveFields(rule.id)}/>
                             </div>
                         ))}
                         <button className="addButton" onClick={handleAddRules}>+ Adicionar Regra</button>
