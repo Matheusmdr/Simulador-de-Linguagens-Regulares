@@ -67,6 +67,7 @@
         justify-content: center;
 
             .select{
+                cursor: pointer;
                 font-size: 1.5rem;
                 font-weight: bold;
                 text-align: center;
@@ -118,6 +119,15 @@
                 &:focus{
                     outline: 1px solid #61DAFB;
                 }
+
+                
+            }
+            .rejected{
+                background: rgba(#ff0000, 0.7);
+            }
+
+            .accepted{
+                background: rgba(#00FF00, 0.7);
             }
 
             .single-buttons{
@@ -171,8 +181,98 @@
 
         .multi-box{
             width: 100%;
-            height: 15rem;
+            min-height: 15rem;
             display: none;
+
+            .mult-buttons{
+                width: 90%;
+                height: 3rem;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                margin: 2rem auto;
+                //border: 1px solid red;
+
+                .test-button{
+                    width: 25%;
+                    height: 2.5rem;
+                    margin: 0 2rem;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    font-family:'Poppins', sans-serif;
+                    color: #F0EBEA;
+                    background: #36A3C2;
+                    cursor: pointer;
+                    transition: 0.2s ease-in-out;
+                    &:hover{
+                        opacity: 0.6;
+                    }
+                }
+
+                .add-button{
+                    width: 25%;
+                    height: 2.5rem;
+                    margin: 0 2rem;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    font-family:'Poppins', sans-serif;
+                    color: #F0EBEA;
+                    background: gray;
+                    cursor: pointer;
+                    transition: 0.2s ease-in-out;
+                    &:hover{
+                        opacity: 0.6;
+                    }
+                }
+            }
+
+            .mult-container{
+                width: 100%;
+                display: flex;
+                flex-direction: row-reverse;
+                justify-content: center;
+                align-items: center;
+                
+                
+                .disable-button{
+                    display:none;
+                }
+
+                .fix-margin{
+                    margin-left: 2rem;
+                }
+                label{
+                    width: 90%;
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    color: #61DAFB;
+                    padding-left: 0.5rem;
+                }
+        
+                input{
+                    width: 100%;
+                    height: 2.5rem;
+                    background: #434854;
+                    color: #F0EBEA;
+                    border-radius: 10px;
+                    font-size: 1rem;
+                    font-weight: bold;
+                    font-style: normal;
+                    margin-top: 0.5rem;
+                    padding-left: 1.5rem;
+                    border: 0;
+                    &:focus{
+                        outline: 1px solid #61DAFB;
+                    }
+    
+                    
+                }
+            }
         }
     }
 }
@@ -289,10 +389,10 @@
 
 .graph .node{
     cursor: pointer;
+    user-select: none;
 }
 
 
-//Modals Scrolling
 .ReactModal__Body--open {
     overflow: hidden;
 }

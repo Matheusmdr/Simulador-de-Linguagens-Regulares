@@ -186,6 +186,7 @@ export function SimuladorGR() {
         if (!rules) return false
 
         for (let r of rules.terminal) {
+          
             if (validate(grammar, rule.replace(proxRule, r), string, type)) {
                 return true
             }

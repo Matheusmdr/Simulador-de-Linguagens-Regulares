@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import Modal from 'react-modal';
 import { Graphviz } from 'graphviz-react';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { Header } from "../../components/Header/Header";
 import "./SimuladorAF.scss";
 import "./ModalState.scss";
@@ -19,10 +20,20 @@ export function SimuladorAF() {
     const [clickedNode, setClickedNode] = useState("")
     const [countState, setCountStates] = useState(1)
     const [states, setStates] = useState([]) //{ id: 1, name: "", start: false, final: false}
-
     const [countTransition, setCountTransitions] = useState(1)
     const [transitions, setTransitions] = useState([]) //{ id: 1, origin_state: "", input_char: "", dest_state: ""}
+    const [nodesName, setNodesName] = useState([])
+    const [modalStepByStepIsOpen, setModalStepByStepOpen] = useState(false)
+    const [stepStringArray, setStepStringArray] = useState([])
+    const [singleTest, setSingleTest] = useState({ id: 1, string: "", accepted: "" })
+    const [count, setCount] = useState(2)
+    const [tests, setTests] = useState([{ id: 1, string: "", accepted: "" },])
+    let stepString = []
 
+    const handleStepByStepModal = () => {
+        if (validateAF()) setModalStepByStepOpen(prev => !prev)
+        else setModalStepByStepOpen(false)
+    }
 
     //Add State
     const [modalAddStateIsOpen, setModalAddStateOpen] = useState(false)
@@ -30,6 +41,31 @@ export function SimuladorAF() {
     const handleAddStateModal = () => {
         setModalAddStateOpen(prev => !prev)
     }
+
+    const [modalClickNodeIsOpen, setClickNodeIsOpen] = useState(false)
+
+    const handleClickNodeModal = () => {
+        setClickNodeIsOpen(prev => !prev)
+    }
+
+    //Add Transition
+    const [modalAddTransitionIsOpen, setModalAddTransitionOpen] = useState(false)
+
+    const handleAddTransitionModal = () => {
+        setModalAddTransitionOpen(prev => !prev)
+    }
+    const [modalRemoveTransitionIsOpen, setModalRemoveTransitionIsOpen] = useState(false)
+
+    const handleRemoveTransitionModal = () => {
+        setModalRemoveTransitionIsOpen(prev => !prev)
+    }
+
+    const [modalRemoveStateIsOpen, setRemoveStateIsOpen] = useState(false)
+
+    const handleRemoveStateModal = () => {
+        setRemoveStateIsOpen(prev => !prev)
+    }
+
 
     useEffect(() => {
         const handleGraphvizString = () => {
@@ -48,16 +84,9 @@ export function SimuladorAF() {
             string += `bgcolor=transparent}`
             setGraphString(string)
         }
-
-
         handleGraphvizString();
     });
 
-    const [modalClickNodeIsOpen, setClickNodeIsOpen] = useState(false)
-
-    const handleClickNodeModal = () => {
-        setClickNodeIsOpen(prev => !prev)
-    }
 
     const handleClickNode = (e) => {
         let node = e.target.textContent
@@ -104,13 +133,6 @@ export function SimuladorAF() {
             }
             handleAddStateModal()
         }
-    }
-
-    //Add Transition
-    const [modalAddTransitionIsOpen, setModalAddTransitionOpen] = useState(false)
-
-    const handleAddTransitionModal = () => {
-        setModalAddTransitionOpen(prev => !prev)
     }
 
     const addNewTransition = () => {
@@ -211,17 +233,6 @@ export function SimuladorAF() {
         }
     }
 
-    const [modalRemoveTransitionIsOpen, setModalRemoveTransitionIsOpen] = useState(false)
-
-    const handleRemoveTransitionModal = () => {
-        setModalRemoveTransitionIsOpen(prev => !prev)
-    }
-
-    const [modalRemoveStateIsOpen, setRemoveStateIsOpen] = useState(false)
-
-    const handleRemoveStateModal = () => {
-        setRemoveStateIsOpen(prev => !prev)
-    }
 
     const handleClickedNodeChanges = () => {
         let startCheckbox = document.querySelector("#start-checkbox").checked
@@ -243,7 +254,7 @@ export function SimuladorAF() {
         else {
             for (let i = 0; i < states.length; i++) {
                 if (states[i].name === clickedNode) {
-                    values.push({ id: states[i].id, name: states[i].name, start: states[i].start, final: finalCheckbox })
+                    values.push({ id: states[i].id, name: states[i].name, start: startCheckbox, final: finalCheckbox })
                 }
                 else {
                     values.push({ id: states[i].id, name: states[i].name, start: states[i].start, final: states[i].final })
@@ -254,51 +265,218 @@ export function SimuladorAF() {
         setClickNodeIsOpen(false)
     }
 
-    const validateAF = () => {
-        let string = (document.getElementsByName("automaton-input")[0].value);
-        if (string.length > 0 && typeof string === 'string') {
-            const stateInitial = states.filter(state => state.start)
-            const stateFinalArray = states.filter(state => state.final)
-            if (stateInitial.length > 0 && stateFinalArray.length > 0) {
-                let input = document.getElementsByName("automaton-input")[0];
-                if(verifyAF(string, 0, stateInitial[0].name)){
-                    input.style.backgroundColor = "#00ff00"
-                }
-                else{
-                    input.style.backgroundColor = "#ff0000"
-                }
+
+    const AFtoGLUD = () => {
+        let charCode = 65
+        let transitionsAF = JSON.parse(JSON.stringify(transitions))
+        let statesAF = JSON.parse(JSON.stringify(states))
+        let grammar = []
+
+        let nodeNameArray = []
+
+        statesAF = statesAF.map(node => {
+            const nonterminal = String.fromCharCode(charCode++);
+            transitionsAF.forEach(tr => {
+                if (tr.origin_state === node.name) tr.origin_state = nonterminal
+                if (tr.dest_state === node.name) tr.dest_state = nonterminal
+            })
+            nodeNameArray.push({ nodeName: node.name, nodeGRName: nonterminal })
+            node.name = nonterminal
+            return node
+        })
+
+        for (let i = 0; i < transitionsAF.length; i++) {
+            let rules = grammar.find(row => row.nonterminal === transitionsAF[i].origin_state)
+            if (!rules) {
+                if (transitionsAF[i].input_char === 'λ') grammar.push({ nonterminal: transitionsAF[i].origin_state, terminal: [transitionsAF[i].dest_state] })
+                else grammar.push({ nonterminal: transitionsAF[i].origin_state, terminal: [transitionsAF[i].input_char + transitionsAF[i].dest_state] })
             }
             else {
-                alert("insira um estado inicial")
+                if (transitionsAF[i].input_char === 'λ') rules.terminal.push(transitionsAF[i].dest_state)
+                else rules.terminal.push(transitionsAF[i].input_char + transitionsAF[i].dest_state)
+            }
+        }
+
+        for (let i = 0; i < statesAF.length; i++) {
+            if (statesAF[i].final) {
+                let rules = grammar.find(row => row.nonterminal === statesAF[i].name)
+                if (!rules)
+                    grammar.push({ nonterminal: statesAF[i].name, terminal: ['λ'] })
+                else
+                    rules.terminal.push('λ')
+            }
+        }
+
+        for (let i = 0; i < statesAF.length; i++) {
+            if (statesAF[i].start) {
+                let rules = grammar.find(row => row.nonterminal === statesAF[i].name)
+                grammar = grammar.filter(item => item !== rules)
+                grammar.unshift(rules)
+            }
+        }
+        setNodesName(nodeNameArray)
+        return grammar
+
+    }
+
+    const validateAFMult = (inputTest) => {
+        const stateInitial = states.filter(state => state.start)
+        const stateFinalArray = states.filter(state => state.final)
+
+        if (stateInitial.length > 0 && stateFinalArray.length > 0) {
+            let str = ""
+            if (typeof inputTest !== "undefined") {
+                str = inputTest
+            }
+
+            if (transitions.length > 0) {
+                const grammar = AFtoGLUD()
+                let currNode = ""
+                for (let i = 0; i < nodesName.length; i++) {
+                    if (nodesName[i].nodeGRName === grammar[0].nonterminal) {
+                        currNode = nodesName[i]
+                    }
+                }
+
+                for (let rule of grammar[0].terminal) {
+                    stepString = []
+                    if (validateRule(grammar, rule, str, currNode)) {
+                        setStepStringArray(stepString)
+                        return true
+                    };
+                }
                 return false
             }
         }
+        
+        else {
+            alert("Autômato inválido, defina um estado inicial e final")
+            return
+        }
     }
 
-    const verifyAF = (string, pos, currState) => {
-        const transitionsArray = transitions.filter(transition => (transition.origin_state === currState && (transition.input_char === string[pos] || transition.input_char === "λ")))
-       
-        for (let i = 0; i < transitionsArray.length; i++) {
-            let nextState = (states.filter(state => transitionsArray[i].dest_state === state.name))[0]
-            if ((pos >= string.length - 1) && (nextState.final === true)) return true
-            if(pos >= string.length && !nextState.final) return false
-            if (transitionsArray[i].input_char === "λ") {
-                if (verifyAF(string, pos, transitionsArray[i].dest_state)) return true
+    const validateAF = (inputTest) => {
+        const stateInitial = states.filter(state => state.start)
+        const stateFinalArray = states.filter(state => state.final)
+
+        if (stateInitial.length > 0 && stateFinalArray.length > 0) {
+            const str = inputTest.string
+            const grammar = AFtoGLUD()
+            let currNode = ""
+            for (let i = 0; i < nodesName.length; i++) {
+                if (nodesName[i].nodeGRName === grammar[0].nonterminal) {
+                    currNode = nodesName[i]
+                }
             }
-            else {
-                if (verifyAF(string, pos + 1, transitionsArray[i].dest_state)) return true
+
+            for (let rule of grammar[0].terminal) {
+                stepString = []
+                if (validateRule(grammar, rule, str, currNode)) {
+                    setSingleTest({ id: inputTest.id, string: str, accepted: true })
+                    setStepStringArray(stepString)
+                    return true
+                };
+            }
+            setSingleTest({ id: inputTest.id, string: str, accepted: false })
+            return false
+        }
+        else {
+            alert("Autômato inválido, defina um estado inicial e final")
+            return 
+        }
+    }
+
+    const validateRule = (grammar, rule, string, currNode) => {
+        let currState = currNode
+        if (rule.length - 1 > string.length) return false
+
+        let proxRule = rule[rule.length - 1]
+
+        let nextNode = ""
+        for (let i = 0; i < nodesName.length; i++) {
+            if (nodesName[i].nodeGRName === proxRule) {
+                nextNode = nodesName[i]
             }
         }
+        if (proxRule === 'λ' && (rule.slice(0, rule.length - 1) === string && rule.slice(0, rule.length - 1).length === string.length)) {
+            return true
+        }
+        if (typeof proxRule !== 'undefined') {
+            if (proxRule === proxRule.toLowerCase()) {
+                return rule === string
+            }
+        }
+        let receives = rule[rule.length - 2]
 
-        return false
+        if (rule.length > 1 && rule.slice(0, rule.length - 1) !== string.slice(0, rule.length - 1)) return false
+
+        const rules = grammar.find(row => row.nonterminal === proxRule)
+        if (!rules) return false
+
+        for (let r of rules.terminal) {
+            stepString.push(`Estado atual: ${currState.nodeName} => Caractere Atual: ${receives} => Próximo estado: ${nextNode.nodeName}`)
+            if (validateRule(grammar, rule.replace(proxRule, r), string, nextNode)) {
+                return true
+            }
+        }
     }
 
 
+    const handleAddTests = () => {
+        setTests([...tests, { id: count, string: "" }])
+        setCount(count + 1)
+    }
+
+    const handleRemoveTests = id => {
+        const values = [...tests];
+        values.splice(values.findIndex(value => value.id === id), 1);
+        setTests(values);
+    }
+
+    const handleChangeInput = (id, event) => {
+        const newInputFields = tests.map(i => {
+            if (id === i.id) {
+                let value = event.target.value
+                i[event.target.name] = value
+            }
+            return i;
+        })
+        setTests(newInputFields)
+    }
+
+    const handleMultTest = () => {
+        const newInputTests = []
+        for (let i = 0; i < tests.length; i++) {
+            let accepted = validateAFMult(tests[i].string)
+            newInputTests.push({ id: tests[i].id, string: tests[i].string, accepted: accepted })
+        }
+        setTests(newInputTests)
+    }
 
     return (
         <div>
             <Header />
             <div className="container">
+
+                <Modal
+                    closeTimeoutMS={100}
+                    isOpen={modalStepByStepIsOpen}
+                    onRequestClose={handleStepByStepModal}
+                    className="click-node-content"
+                    overlayClassName="click-node-overlay"
+                >
+                    <div className="click-node-box">
+                        {stepStringArray.map(string => (
+                            <p>{string}</p>
+                        )
+                        )}
+                        <div className="click-node-buttons">
+
+                            <button className="cancel-node-button" onClick={handleStepByStepModal}>fechar</button>
+                        </div>
+                    </div>
+                </Modal>
+
                 <Modal
                     closeTimeoutMS={100}
                     isOpen={modalClickNodeIsOpen}
@@ -395,7 +573,7 @@ export function SimuladorAF() {
                         <div className="select-box">
                             <div>
                                 <select id="remove-state-input">
-                                    {states.map((state, index) => (
+                                    {states.map((state) => (
                                         <option key={state.id} value={state.id}>{state.name}</option>
                                     ))}
                                 </select>
@@ -450,20 +628,34 @@ export function SimuladorAF() {
 
 
                     <div className="select-test">
-                        <p className="single-test select is-active" onClick={event => changeTestType(event)} >Single Test</p>
-                        <p className="multi-test select" onClick={event => changeTestType(event)} >Multi Test</p>
+                        <p className="single-test select is-active" onClick={event => changeTestType(event)} >Entrada única</p>
+                        <p className="multi-test select" onClick={event => changeTestType(event)} >Entradas múltiplas</p>
                     </div>
                     <div className="test-box">
                         <div className="single-box">
                             <label id="automaton-label" htmlFor="automaton-input"> TESTAR STRING</label>
-                            <input type="text" name="automaton-input" placeholder="insira sua string de teste aqui" />
+                            <input type="text" name="automaton-input" placeholder="insira sua string de teste aqui" onChange={event => setSingleTest({ string: event.target.value, accepted: "" })} className={`${singleTest.accepted === true ? 'accepted' : ''}` || `${singleTest.accepted === false ? 'rejected' : ''}`} />
                             <div className="single-buttons">
-                                <button className="test-button" onClick={validateAF}>Testar</button>
-                                <button className="step-button">Step-by-step</button>
+                                <button className="test-button" onClick={() => validateAF(singleTest)}>Testar</button>
+                                {/*<button className="step-button" onClick={handleStepByStepModal}>Step-by-step</button>*/}
                             </div>
                         </div>
                         <div className="multi-box">
-
+                            <div className="tests-container">
+                                {tests.map(test => (
+                                    <div className="string-container" key={test.id}>
+                                        <RemoveCircleOutlineIcon className={`remove-button ${test.id === 1 ? 'disable-button' : ''}`} disabled={test.id === 1} onClick={() => handleRemoveTests(test.id)} />
+                                        <div className={`box-string ${test.id === 1 ? 'fix-margin' : ''}`}>
+                                            <label htmlFor="string">TESTAR STRING</label>
+                                            <input type="text" name="string" className={`${test.accepted === true ? 'accepted' : ''}` || `${test.accepted === false ? 'rejected' : ''}`} onChange={event => handleChangeInput(test.id, event)} placeholder="insira sua string de teste aqui" />
+                                        </div>
+                                    </div>
+                                ))}
+                                <div className="mult-buttons">
+                                    <button className="test-button" onClick={handleMultTest} >Testar</button>
+                                    <button className="add-button" onClick={handleAddTests} >+ Adicionar Teste</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
