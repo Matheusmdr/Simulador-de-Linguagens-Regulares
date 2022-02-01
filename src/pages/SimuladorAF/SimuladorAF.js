@@ -320,38 +320,28 @@ export function SimuladorAF() {
     }
 
     const validateAFMult = (inputTest) => {
-        const stateInitial = states.filter(state => state.start)
-        const stateFinalArray = states.filter(state => state.final)
-
-        if (stateInitial.length > 0 && stateFinalArray.length > 0) {
-            let str = ""
-            if (typeof inputTest !== "undefined") {
-                str = inputTest
-            }
-
-            if (transitions.length > 0) {
-                const grammar = AFtoGLUD()
-                let currNode = ""
-                for (let i = 0; i < nodesName.length; i++) {
-                    if (nodesName[i].nodeGRName === grammar[0].nonterminal) {
-                        currNode = nodesName[i]
-                    }
-                }
-
-                for (let rule of grammar[0].terminal) {
-                    stepString = []
-                    if (validateRule(grammar, rule, str, currNode)) {
-                        setStepStringArray(stepString)
-                        return true
-                    };
-                }
-                return false
-            }
+        let str = ""
+        if (typeof inputTest !== "undefined") {
+            str = inputTest
         }
-        
-        else {
-            alert("Autômato inválido, defina um estado inicial e final")
-            return
+
+        if (transitions.length > 0) {
+            const grammar = AFtoGLUD()
+            let currNode = ""
+            for (let i = 0; i < nodesName.length; i++) {
+                if (nodesName[i].nodeGRName === grammar[0].nonterminal) {
+                    currNode = nodesName[i]
+                }
+            }
+
+            for (let rule of grammar[0].terminal) {
+                stepString = []
+                if (validateRule(grammar, rule, str, currNode)) {
+                    setStepStringArray(stepString)
+                    return true
+                };
+            }
+            return false
         }
     }
 
@@ -382,7 +372,7 @@ export function SimuladorAF() {
         }
         else {
             alert("Autômato inválido, defina um estado inicial e final")
-            return 
+            return
         }
     }
 
@@ -445,12 +435,23 @@ export function SimuladorAF() {
     }
 
     const handleMultTest = () => {
-        const newInputTests = []
-        for (let i = 0; i < tests.length; i++) {
-            let accepted = validateAFMult(tests[i].string)
-            newInputTests.push({ id: tests[i].id, string: tests[i].string, accepted: accepted })
+
+        const stateInitial = states.filter(state => state.start)
+        const stateFinalArray = states.filter(state => state.final)
+
+        if (stateInitial.length > 0 && stateFinalArray.length > 0) {
+            const newInputTests = []
+            for (let i = 0; i < tests.length; i++) {
+                let accepted = validateAFMult(tests[i].string)
+                newInputTests.push({ id: tests[i].id, string: tests[i].string, accepted: accepted })
+            }
+            setTests(newInputTests)
         }
-        setTests(newInputTests)
+        else {
+            alert("Autômato inválido, defina um estado inicial e final")
+            return
+        }
+
     }
 
     return (
